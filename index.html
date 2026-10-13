@@ -3,9 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
     <title>The Weather</title>
 </head>
 <body>
+    <form>
+        <label for="location">Write a location:</label>
+        <input name="location" type="text" placeholder="London, Paris, etc">
+        <button type="submit" id="find-button">Find</button>
+    </form>
+    <div class="weather-info"></div>
     <script src="./script.js"></script>
 </body>
 </html>

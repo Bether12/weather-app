@@ -1,6 +1,7 @@
 const body = document.querySelector('body');
 const form = document.querySelector('form');
 const weatherDiv = document.querySelector('.weather-info');
+const toggleCFButton = document.querySelector('#toggleCF');
 
 /**
  * 
@@ -12,6 +13,26 @@ async function getLocationWeather(location){
     return await response.json();
 }
 
+function toggleCF(){
+    const temps = document.querySelectorAll('.temp');
+    console.log(temps);
+    let to = toggleCFButton.textContent;
+    for(let temp of temps){
+        if(temp.textContent.includes(to)){
+            continue;
+        }else{
+            let temperature = parseFloat(temp.textContent.split(' ')[0]);
+            if(to === 'ºF'){
+                temperature = (temperature*(5/9)) + 32;
+                temp.textContent = `${temperature} ºC`;
+            }else{
+                temperature = (temperature - 32)*(9/5);
+                temp.textContent = `${temperature} ºF`;
+            }
+        }
+    }
+}
+
 function constructWeather(forecast){
     const todayDiv = document.createElement('div');
     const title = document.createElement('p');
@@ -21,10 +42,11 @@ function constructWeather(forecast){
     todayDescription.textContent = forecast.description;
     todayDiv.appendChild(todayDescription);
     const todayTemp = document.createElement('p');
-    todayTemp.textContent = forecast.currentConditions.temp;
+    todayTemp.className = 'temp';
+    todayTemp.textContent = `${forecast.currentConditions.temp} ºF`;
     todayDiv.appendChild(todayTemp);
     const todayFeelsLike = document.createElement('p');
-    todayFeelsLike.textContent = forecast.currentConditions.feelslike;
+    todayFeelsLike.textContent = `${forecast.currentConditions.feelslike} ºF`;
     todayDiv.appendChild(todayFeelsLike);
     const todayHumidity = document.createElement('p');
     todayHumidity.textContent = `${forecast.currentConditions.humidity}%`;
@@ -41,10 +63,11 @@ function constructWeather(forecast){
         description.textContent = forecast.days[i].description;
         div.appendChild(description);
         const temp = document.createElement('p');
-        temp.textContent = forecast.days[i].temp;
+        temp.className = 'temp';
+        temp.textContent = `${forecast.days[i].temp} ºF`;
         div.appendChild(temp);
         const feelsLike = document.createElement('p');
-        feelsLike.textContent = forecast.days[i].feelslike;
+        feelsLike.textContent = `${forecast.days[i].feelslike} ºF`;
         div.appendChild(feelsLike);
         const humidity = document.createElement('p');
         humidity.textContent = `${forecast.currentConditions.humidity}%`;
@@ -72,4 +95,9 @@ form.addEventListener('submit', async(e) => {
     const response = await getLocationWeather(formData.location);
     console.log(response); 
     constructWeather(response);
+});
+
+toggleCFButton.addEventListener('click', ()=>{
+    toggleCFButton.textContent = toggleCFButton.textContent === 'ºF' ? 'ºC' : 'ºF';
+    toggleCF();
 });

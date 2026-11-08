@@ -24,10 +24,10 @@ function toggleCF(){
             let temperature = parseFloat(temp.textContent.split(' ')[0]);
             if(to === 'ºF'){
                 temperature = (temperature*(5/9)) + 32;
-                temp.textContent = `${temperature} ºC`;
+                temp.textContent = `${temperature.toFixed(1)} ºF`;
             }else{
                 temperature = (temperature - 32)*(9/5);
-                temp.textContent = `${temperature} ºF`;
+                temp.textContent = `${temperature.toFixed(1)} ºC`;
             }
         }
     }
@@ -46,6 +46,7 @@ function constructWeather(forecast){
     todayTemp.textContent = `${forecast.currentConditions.temp} ºF`;
     todayDiv.appendChild(todayTemp);
     const todayFeelsLike = document.createElement('p');
+    todayFeelsLike.className = 'temp';
     todayFeelsLike.textContent = `${forecast.currentConditions.feelslike} ºF`;
     todayDiv.appendChild(todayFeelsLike);
     const todayHumidity = document.createElement('p');
@@ -67,6 +68,7 @@ function constructWeather(forecast){
         temp.textContent = `${forecast.days[i].temp} ºF`;
         div.appendChild(temp);
         const feelsLike = document.createElement('p');
+        feelsLike.className = 'temp';
         feelsLike.textContent = `${forecast.days[i].feelslike} ºF`;
         div.appendChild(feelsLike);
         const humidity = document.createElement('p');

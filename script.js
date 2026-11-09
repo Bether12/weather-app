@@ -56,7 +56,6 @@ async function getLocationWeather(location){
 function toggleCF(){
     const temps = document.querySelectorAll('.temp');
     let to = toggleCFButton.textContent;
-    console.log('To:',to);
     for(let temp of temps){
         if(temp.textContent.includes(to)){
             continue;
@@ -73,6 +72,32 @@ function toggleCF(){
     }
 }
 
+function selectWeatherIcon(term){
+    if(term === 'snow'){
+        return './assets/snowflake.svg';
+    }else if(term === 'snow-showers-day' || term === 'snow-showers-night'){
+        return './assets/rainy_snow.svg';
+    }else if(term === 'thunder-rain' || term === 'thunder-showers-day' || term === 'thunder-showers-night'){
+        return './assets/thunderstorm.svg';
+    }else if(term === 'rain' || term === 'showers-day' || term === 'showers-night'){
+        return './assets/rainy.svg';
+    }else if(term === 'fog'){
+        return './assets/foggy.svg';
+    }else if(term === 'wind'){
+        return './assets/air.svg';
+    }else if(term === 'cloudy'){
+        return './assets/cloud.svg';
+    }else if(term === 'partly-cloudy-day'){
+        return './assets/partly_cloudy_day.svg';
+    }else if(term === 'partly-cloudy-night'){
+        return './assets/partly_cloudy_night.svg';
+    }else if(term === 'clear-day'){
+        return './assets/clear_day.svg';
+    }else if(term === 'clear-night'){
+        return './assets/clear-night.svg';
+    }
+}
+
 function constructWeather(forecast){
     weatherDiv.innerHTML = '';
     if(forecast.code){
@@ -86,6 +111,10 @@ function constructWeather(forecast){
     const title = document.createElement('p');
     title.textContent = "Today's weather";
     todayDiv.appendChild(title);
+    const todayIcon = document.createElement('img');
+    todayIcon.className = 'icon';
+    todayIcon.src = selectWeatherIcon(forecast.currentConditions.icon);
+    todayDiv.appendChild(todayIcon);
     const todayDescription = document.createElement('p');
     todayDescription.textContent = forecast.description;
     todayDiv.appendChild(todayDescription);
@@ -108,6 +137,10 @@ function constructWeather(forecast){
         const date = document.createElement('p');
         date.textContent = `${forecast.days[i].datetime}`;
         div.appendChild(date);
+        const icon = document.createElement('img');
+        icon.className = 'icon';
+        icon.src = selectWeatherIcon(forecast.days[i].icon);
+        div.appendChild(icon);
         const description = document.createElement('p');
         description.textContent = forecast.days[i].description;
         div.appendChild(description);

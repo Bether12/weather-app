@@ -6,3 +6,74 @@
 :root{
     font-family: Roboto,'Courier New', Courier, monospace;
 }
+
+body{
+    display: grid;
+}
+
+h1{
+    justify-self: center;
+    padding: 5px;
+    margin-bottom: 30px;
+    border: 2px black solid;
+    box-shadow: 10px 10px;
+}
+
+form{
+    justify-self: center;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: 2px black solid;
+    box-shadow: 10px 10px;
+}
+
+button{
+    color: white;
+    background-color: black;
+    border: 2px solid darkslategray;
+    box-shadow: 2px 2px ghostwhite;
+}
+
+button:active{
+    color: black;
+    background-color: white;
+    border: 2px solid;
+    box-shadow: 2px 2px;
+}
+
+#toggleCF{
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    justify-self: center;
+}
+
+input{
+    border: 2px black solid;
+    box-shadow: 1px 1px;
+}
+
+input:focus{
+    color: white;
+    outline: none;
+    border: 2px darkslategrey solid;
+    box-shadow: 1px 1px ghostwhite;
+    background-color: black;
+}
+
+.weather-info{
+    margin-top: 20px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 0.2fr);
+}
+
+.weather-info .today{
+    grid-row: 1/6;
+}

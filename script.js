@@ -108,6 +108,7 @@ function constructWeather(forecast){
         return
     }
     const todayDiv = document.createElement('div');
+    todayDiv.className = 'today';
     const title = document.createElement('p');
     title.textContent = "Today's weather";
     todayDiv.appendChild(title);

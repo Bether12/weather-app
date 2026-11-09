@@ -9,41 +9,48 @@ const toggleCFButton = document.querySelector('#toggleCF');
  * @returns {Object}
  */
 async function getLocationWeather(location){
-    const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=RBCBP8CB6FXM8NM4NRYEPQ6ZG`);
-    if(!response.ok){
-        if(response.status === 400){
-            return {
-                code: response.status,
-                error: 'The given location is unknown'
-            };
-        }else if(response.status === 401){
-            return {
-                code: response.status,
-                error: 'The operation is not authorized'
-            };
-        }else if(response.status === 404){
-            return {
-                code: response.status,
-                error: 'Cannot locate the weather service'
-            };
-        }else if(response.status === 429){
-            return {
-                code: response.status,
-                error: 'Too many requests, try again later'
-            };
-        }else if(response.status === 500){
-            return {
-                code: response.status,
-                error: 'Internal server error'
-            };
-        }else{
-            return {
-                code: response.status,
-                error: 'An error occurred'
-            };
+    try{
+        const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=RBCBP8CB6FXM8NM4NRYEPQ6ZG`);
+        if(!response.ok){
+            if(response.status === 400){
+                return {
+                    code: response.status,
+                    error: 'The given location is unknown'
+                };
+            }else if(response.status === 401){
+                return {
+                    code: response.status,
+                    error: 'The operation is not authorized'
+                };
+            }else if(response.status === 404){
+                return {
+                    code: response.status,
+                    error: 'Cannot locate the weather service'
+                };
+            }else if(response.status === 429){
+                return {
+                    code: response.status,
+                    error: 'Too many requests, try again later'
+                };
+            }else if(response.status === 500){
+                return {
+                    code: response.status,
+                    error: 'Internal server error'
+                };
+            }else{
+                return {
+                    code: response.status,
+                    error: 'An error occurred'
+                };
+            }
+        }
+        return await response.json();
+    }catch(error){
+        return {
+            code: `(${error.message})`,
+            error: ' Check your connection and try again'
         }
     }
-    return await response.json();
 }
 
 function toggleCF(){

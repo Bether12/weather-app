@@ -48,18 +48,18 @@ async function getLocationWeather(location){
 
 function toggleCF(){
     const temps = document.querySelectorAll('.temp');
-    console.log(temps);
     let to = toggleCFButton.textContent;
+    console.log('To:',to);
     for(let temp of temps){
         if(temp.textContent.includes(to)){
             continue;
         }else{
             let temperature = parseFloat(temp.textContent.split(' ')[0]);
             if(to === 'ºF'){
-                temperature = (temperature*(5/9)) + 32;
+                temperature = (temperature*(9/5)) + 32;
                 temp.textContent = `${temperature.toFixed(1)} ºF`;
             }else{
-                temperature = (temperature - 32)*(9/5);
+                temperature = (temperature - 32)*(5/9);
                 temp.textContent = `${temperature.toFixed(1)} ºC`;
             }
         }
@@ -118,6 +118,7 @@ function constructWeather(forecast){
 
         weatherDiv.appendChild(div);
     }
+    toggleCF();
 }
 
 form.addEventListener('submit', async(e) => {

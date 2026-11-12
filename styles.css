@@ -87,3 +87,22 @@ div.error{
     grid-column: 1/3;
     text-align: center;
 }
+
+.weather-info div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    border: 2px black solid;
+    box-shadow: 10px 10px;
+}
+
+.weather-info .today{
+    font-size: 32px;
+}
+
+.weather-info div img{
+    height: max-content;
+    width: max-content;
+}

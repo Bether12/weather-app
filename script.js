@@ -53,6 +53,16 @@ async function getLocationWeather(location){
     }
 }
 
+function loading(){
+    weatherDiv.innerHTML = '';
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'loading-div';
+    const h2 = document.createElement('h2');
+    h2.textContent = 'Loading weather data...';
+    loadingDiv.appendChild(h2);
+    weatherDiv.appendChild(loadingDiv);
+}
+
 function toggleCF(){
     const temps = document.querySelectorAll('.temp');
     let to = toggleCFButton.textContent;
@@ -60,13 +70,25 @@ function toggleCF(){
         if(temp.textContent.includes(to)){
             continue;
         }else{
-            let temperature = parseFloat(temp.textContent.split(' ')[0]);
-            if(to === 'ºF'){
-                temperature = (temperature*(9/5)) + 32;
-                temp.textContent = `${temperature.toFixed(1)} ºF`;
+            let temperature;
+            if(temp.classList.contains('feelslike')){
+                temperature = parseFloat(temp.textContent.split(' ')[2]);
+                if(to === 'ºF'){
+                    temperature = (temperature*(9/5)) + 32;
+                    temp.textContent = `Feels like: ${temperature.toFixed(1)} ºF`;
+                }else{
+                    temperature = (temperature - 32)*(5/9);
+                    temp.textContent = `Feels like: ${temperature.toFixed(1)} ºC`;
+                }
             }else{
-                temperature = (temperature - 32)*(5/9);
-                temp.textContent = `${temperature.toFixed(1)} ºC`;
+                temperature = parseFloat(temp.textContent.split(' ')[1]);
+                if(to === 'ºF'){
+                    temperature = (temperature*(9/5)) + 32;
+                    temp.textContent = `Temperature: ${temperature.toFixed(1)} ºF`;
+                }else{
+                    temperature = (temperature - 32)*(5/9);
+                    temp.textContent = `Temperature: ${temperature.toFixed(1)} ºC`;
+                }
             }
         }
     }
@@ -94,7 +116,7 @@ function selectWeatherIcon(term){
     }else if(term === 'clear-day'){
         return './assets/clear_day.svg';
     }else if(term === 'clear-night'){
-        return './assets/clear-night.svg';
+        return './assets/clear_night.svg';
     }
 }
 
@@ -121,14 +143,15 @@ function constructWeather(forecast){
     todayDiv.appendChild(todayDescription);
     const todayTemp = document.createElement('p');
     todayTemp.className = 'temp';
-    todayTemp.textContent = `${forecast.currentConditions.temp} ºF`;
+    todayTemp.textContent = `Temperature: ${forecast.currentConditions.temp} ºF`;
     todayDiv.appendChild(todayTemp);
     const todayFeelsLike = document.createElement('p');
     todayFeelsLike.className = 'temp';
-    todayFeelsLike.textContent = `${forecast.currentConditions.feelslike} ºF`;
+    todayFeelsLike.classList.add('feelslike');
+    todayFeelsLike.textContent = `Feels like: ${forecast.currentConditions.feelslike} ºF`;
     todayDiv.appendChild(todayFeelsLike);
     const todayHumidity = document.createElement('p');
-    todayHumidity.textContent = `${forecast.currentConditions.humidity}%`;
+    todayHumidity.textContent = `Relative humidity: ${forecast.currentConditions.humidity}%`;
     todayDiv.appendChild(todayHumidity);
 
     weatherDiv.appendChild(todayDiv);
@@ -147,14 +170,15 @@ function constructWeather(forecast){
         div.appendChild(description);
         const temp = document.createElement('p');
         temp.className = 'temp';
-        temp.textContent = `${forecast.days[i].temp} ºF`;
+        temp.textContent = `Temperature: ${forecast.days[i].temp} ºF`;
         div.appendChild(temp);
         const feelsLike = document.createElement('p');
         feelsLike.className = 'temp';
-        feelsLike.textContent = `${forecast.days[i].feelslike} ºF`;
+        feelsLike.classList.add('feelslike');
+        feelsLike.textContent = `Feels like: ${forecast.days[i].feelslike} ºF`;
         div.appendChild(feelsLike);
         const humidity = document.createElement('p');
-        humidity.textContent = `${forecast.currentConditions.humidity}%`;
+        humidity.textContent = `Relative humidity: ${forecast.currentConditions.humidity}%`;
         div.appendChild(humidity);
 
         weatherDiv.appendChild(div);
@@ -164,19 +188,8 @@ function constructWeather(forecast){
 
 form.addEventListener('submit', async(e) => {
     e.preventDefault();
+    loading();
     const formData = new FormData(form);
-    /*
-    currentConditions:
-        temp: Shows current temperature
-        feelslike: Shows temperature based on humidity
-        icon: Reflects the weather through an icon
-        humidity: Shows relative humidity
-    days
-        datetime: shows date
-        temp: Shows the "current temperature"
-        tempmin, tempmax: Shows minimum and maximum temperatures
-    description: Overall description
-    */
     const response = await getLocationWeather(formData.get('location'));
     console.log(response); 
     constructWeather(response);
